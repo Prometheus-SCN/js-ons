@@ -8,7 +8,7 @@ module.exports = class Record {
   constructor (options) {
     if (options instanceof OffUrl) {
       let offUrl = options
-      let key = base58.encode(util.hash(offUrl.hash))
+      let key = `${base58.encode(util.hash(offUrl.hash))}O`
       _key.set(this, key)
       _offUrl.set(this, offUrl)
       let value = util.encrypt(offUrl.toString(), offUrl.hash)

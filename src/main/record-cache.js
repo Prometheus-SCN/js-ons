@@ -74,9 +74,9 @@ module.exports = class RecordCache extends EventEmitter {
   contains (key, cb) {
     this.get(key, (err, value) => {
       if (err || !value) {
-        return cb(null, false)
+        return cb(err, false)
       }
-      return cb(null, true)
+      return cb(err, true)
     })
   }
   contents (cb) {

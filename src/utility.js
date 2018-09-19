@@ -34,4 +34,13 @@ util.isKeyPair = (pubKey, privKey) => {
   let key = curve.getPublicKey()
   return key.equals(pubKey)
 }
+util.isMutable = (text) => {
+  return /([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+)\/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+I)\/{0,1}([^ !$`&*()+]*|\\[ !$`&*()+]*)*/.test(text)
+}
+util.isRecord = (text) => {
+  return /([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+)\/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+O)\/{0,1}([^ !$`&*()+]*|\\[ !$`&*()+]*)*/.test(text)
+}
+util.isAddress = (text) => {
+  return /([\da-zA-Z]+)/.test(text)
+}
 module.exports = util

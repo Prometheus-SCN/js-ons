@@ -27,7 +27,7 @@ module.exports = class Mutable {
       return key
     } else {
       let pubKey = _pubKey.get(this)
-      key = base58.encode(pubKey)
+      key = `${base58.encode(util.hash(pubKey))}I`
       _key.set(this, key)
       return key
     }
@@ -56,7 +56,7 @@ module.exports = class Mutable {
       throw new TypeError('Invalid Private Key')
     }
     // TODO: Validation of contents
-    _contents.set(this, util.privateEncrypt(contents, privKey))
+    _contents.set(this, util.privateEncrypt(value, privKey))
   }
   toString () {
     let pubKey = _pubKey.get(this)

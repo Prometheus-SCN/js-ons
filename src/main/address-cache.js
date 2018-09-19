@@ -1,5 +1,5 @@
 const EventEmitter = require('events').EventEmitter
-const Mutable = require('./mutable')
+const Address = require('./address')
 const level = require('level-rocksdb')
 const collect = require('collect-stream')
 const getSize = require('get-folder-size')
@@ -8,13 +8,13 @@ const _path = new WeakMap()
 const _db = new WeakMap()
 const _size = new WeakMap()
 
-module.exports = class MutableCache extends EventEmitter {
+module.exports = class AddressCache extends EventEmitter {
   constructor (path) {
     super()
     if (!path || typeof path !== 'string') {
       throw new TypeError('Invalid path')
     }
-    pth.join(path, '.mutable-cache')
+    pth.join(path, '.address-cache')
     _path.set(this, path)
     let db = level(path)
     _db.set(this, db)
@@ -34,12 +34,12 @@ module.exports = class MutableCache extends EventEmitter {
     })
   }
 
-  put (mutable, cb) {
-    if (!(mutable instanceof Mutable)) {
+  put (address, cb) {
+    if (!(address instanceof Address)) {
       return cb()
     }
     let db = _db.get(this)
-    db.put(mutable.key, mutable.value, cb)
+    db.put(address.key, address.value, cb)
     this.dirty = true
   }
 
@@ -52,13 +52,13 @@ module.exports = class MutableCache extends EventEmitter {
       if (err) {
         return cb(err)
       }
-      let mutable
+      let address
       try {
-        mutable = Mutable(value)
+        address = Address({key, value})
       } catch (ex) {
         return cb(ex)
       }
-      return cb(null, mutable)
+      return cb(null, address)
     })
   }
   remove (key, cb) {
